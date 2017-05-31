@@ -12,7 +12,7 @@ const MAX_TICKETS = 20;
 // Stores all the lottery tickets
 let allLotteryTickets = [];
 
-global.getAllTickets = function() {
+Exiled.getAllTickets = function() {
 	if (!Object.keys(Db('tickets').object()).length) return false;
     // Get all the tickets.
 	for (let i in Db('tickets').object()) {
@@ -32,7 +32,7 @@ function generateTicket() {
 	return lotteryTicket;
 };
 
-global.giveTicket = function (user) {
+Exiled.giveTicket = function (user) {
 	user = toId(user);
 	if (!user) return false;
 	if (!Db('tickets').has(user)) {
@@ -74,7 +74,6 @@ function pickLottery() {
 };
 
 exports.commands = {
-
 	tickets: 'ticket',
 	ticket: {
 		show: function (target, room, user) {
@@ -94,24 +93,23 @@ exports.commands = {
 	},
 
 	lottery: {
-	    pick: function (target, room, user) {
-	    	if (!this.can('makechatroom')) return false;
-	        if (!Object.keys(Db('tickets').object()).length) return this.errorReply('No one seems to have bought tickets.');
-	        let results = pickLottery();
-	        let winningUser = results[0];
-	        let winningTicket = results[1];
-	        let userMoney = Db('money').get(toId(winningUser), 0);
-	        let pot = Db('pots').get('lotteryPot', 0);
-	        Db('money').set(toId(winningUser), userMoney + pot);
-	        Db('pots').set('lotteryPot', 0);
-			let msg = "<center><h2>Lottery!</h2><h4><br /><font color="+ color(user) +"><b>" + winningUser + "</b></font> has won the lottery with the ticket id of " + winningTicket + "! This user has gained " + pot + " bucks for winning the lottery.</h4></center>";
-			this.parse('/gdeclare ' + msg);
-		},
-
-	    pot: function (target, room, user) {
-	        if (!this.runBroadcast()) return false;
-	        let pot = Db('pots').get('lotteryPot', 0);
-	        this.sendReplyBox('<b>Current Pot Worth:</b> ' + pot + ' bucks.');
+		pick: function (target, room, user) {
+		    if (!this.can('makechatroom')) return false;
+		    if (!Object.keys(Db('tickets').object()).length) return this.errorReply('No one seems to have bought tickets.');
+		    let results = pickLottery();
+		    let winningUser = results[0];
+		    let winningTicket = results[1];
+		    let userMoney = Db('money').get(toId(winningUser), 0);
+		    let pot = Db('pots').get('lotteryPot', 0);
+		    Db('money').set(toId(winningUser), userMoney + pot);
+		    Db('pots').set('lotteryPot', 0);
+		    let msg = "<center><h2>Lottery!</h2><h4><br /><font color="+ color(user) +"><b>" + winningUser + "</b></font> has won the lottery with the ticket id of " + winningTicket + "! This user has gained " + pot + " bucks for winning the lottery.</h4></center>";
+		    this.parse('/gdeclare ' + msg);
 	    },
+		pot: function (target, room, user) {
+			if (!this.runBroadcast()) return false;
+			let pot = Db('pots').get('lotteryPot', 0);
+			this.sendReplyBox('<b>Current Pot Worth:</b> ' + pot + ' bucks.');
+		},
 	},
 };
