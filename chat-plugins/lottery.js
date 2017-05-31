@@ -7,17 +7,16 @@
 'use strict';
 
 const color = require('../config/color');
-const MAX_TICKETS = 20;
 
 // Stores all the lottery tickets
 let allLotteryTickets = [];
 
-Exiled.getAllTickets = function() {
+Exiled.getAllTickets = function () {
 	if (!Object.keys(Db('tickets').object()).length) return false;
     // Get all the tickets.
 	for (let i in Db('tickets').object()) {
 	    for (let v in Db('tickets').object()[i]['Tickets']) {
-    		allLotteryTickets.push(Db('tickets').object()[i]['Tickets'][v]);
+		    allLotteryTickets.push(Db('tickets').object()[i]['Tickets'][v]);
 	    }
 	}
 };
@@ -30,7 +29,7 @@ function generateTicket() {
 		lotteryTicket += chars[Math.floor(Math.random() * chars.length)];
 	}
 	return lotteryTicket;
-};
+}
 
 Exiled.giveTicket = function (user) {
 	user = toId(user);
