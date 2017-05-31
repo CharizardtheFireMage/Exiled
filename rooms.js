@@ -834,6 +834,7 @@ class BattleRoom extends Room {
 				let wid = toId(winner);
 				Db('money').set(wid, Db('money').get(wid, 0) + 1);
 				this.push("|raw|<b><font color='#cc0099'>" + Chat.escapeHTML(winner) + "</font> has won " + "<font color='#cc0099'>1</font> buck for winning an Random Format Rated Battle!</b>");
+			}
 		} else if (Config.logchallenges) {
 			// Log challenges if the challenge logging config is enabled.
 			if (winnerid === this.p1.userid) {
