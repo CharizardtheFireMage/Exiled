@@ -40,6 +40,7 @@ function isMoney(money) {
 }
 
 let shop = [
+	['Ticket', 'Buys a lottery ticket, that adds you to the lottery draw. You could win major bucks.', 2],
 	['Avatar', 'Buys an custom avatar to be applied to your name (You supply. Images larger than 80x80 may not show correctly).', 5],
 	['League Room', 'Purchases a room for league usage.', 5],
 	['Symbol', 'Buys a custom symbol to go infront of name and puts you at top of userlist. (Temporary until restart, certain symbols are blocked)', 5],
@@ -174,6 +175,9 @@ function handleBoughtItem(item, user, cost) {
 	} else if (item === 'profileteam') {
 		Db('hasteam').set(user);
 		this.sendReply('You can now set your team!');
+	} else if (item === 'ticket') {
+		let generatedTicket = giveTicket(user.userid);
+		this.sendReplyBox('You have bought a ticket: <b>' + generatedTicket + '</b>. Use /tickets to see how many tickets do you have.');
 	} else {
 		let msg = '**' + user.name + " has bought " + item + ".**";
 		Rooms.rooms.get("staff").add('|c|~Exiled Server|' + msg);
